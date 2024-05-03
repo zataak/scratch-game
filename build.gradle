@@ -1,0 +1,41 @@
+plugins {
+  id 'java'
+  id "io.freefair.lombok" version "8.6"
+}
+
+group = 'com.cyberspeed'
+version = '1.0-SNAPSHOT'
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.0'
+  implementation 'org.jetbrains:annotations:24.1.0'
+
+  // tests
+  testImplementation platform('org.junit:junit-bom:5.9.1')
+  testImplementation 'org.junit.jupiter:junit-jupiter'
+  testImplementation 'org.mockito:mockito-junit-jupiter:5.11.0'
+  testImplementation 'org.mockito:mockito-inline:5.2.0'
+
+
+}
+
+test {
+  useJUnitPlatform()
+}
+
+jar {
+  duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+
+  manifest {
+    attributes 'Main-Class': 'com.cyberspeed.scratchgame.GameLauncher'
+  }
+
+  from {
+    configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+  }
+}
+
